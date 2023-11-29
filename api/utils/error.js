@@ -1,5 +1,5 @@
-export const errorHandler = (statusCode, message) => {
+const errorHandler = (status, message) => {
   const error = new Error(message);
-  error.statusCode = statusCode;
+  error.status = status;
   return error;
 };
