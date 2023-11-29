@@ -1,6 +1,40 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Signin() {
+  const [formData, setFormData] = useState({});
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.success === false) {
+        setLoading(false);
+        setError(data.message);
+        return;
+      }
+      setLoading(false);
+      setError(null);
+      navigate("/Index");
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
   return (
     <div>
       <div className="flex items-center justify-center">
@@ -15,6 +49,7 @@ export default function Signin() {
         rounded-2xl
         shadow-lg
       "
+        onSubmit={handleSubmit}
       >
         <div className="flex flex-col gap-2">
           <label htmlFor="username" className="font-medium">
@@ -23,8 +58,10 @@ export default function Signin() {
           <input
             type="text"
             id="username"
-            placeholder="Username..."
+            placeholder=" Username..."
             className="border border-gray-300 rounded-md p-1 outline-none"
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -32,8 +69,10 @@ export default function Signin() {
           <input
             type="email"
             id="email"
-            placeholder="johndoe@gmail.com"
+            placeholder=" johndoe@gmail.com"
             className="border border-gray-300 rounded-md p-1 outline-none"
+            onChange={handleChange}
+            required
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -41,12 +80,17 @@ export default function Signin() {
           <input
             type="password"
             id="password"
-            placeholder="********"
+            placeholder=" ********"
             className="border border-gray-300 rounded-md p-1 outline-none"
+            onChange={handleChange}
+            required
           />
         </div>
-        <button className="bg-black text-white rounded-lg p-2 mt-3 font-semibold hover:bg-gray-700">
-          SIGN UP
+        <button
+          disabled={loading}
+          className="bg-black text-white rounded-lg p-2 mt-3 font-semibold hover:bg-gray-700"
+        >
+          {loading ? "Loading..." : "Sign Up"}
         </button>
         <p className="text-center text-sm">
           Already have an account? &nbsp;
@@ -54,6 +98,7 @@ export default function Signin() {
             Login
           </Link>
         </p>
+        {error && <p className="text-red-500 text-sm">{error}</p>}
       </form>
     </div>
   );
