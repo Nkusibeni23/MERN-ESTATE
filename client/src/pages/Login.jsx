@@ -81,7 +81,7 @@ export default function Signin() {
         </button>
         <p className="text-center">
           Dont have an account? &nbsp;
-          <Link to="/signup" className="font-semibold text-sm underline">
+          <Link to="/signin" className="font-semibold text-sm underline">
             Sign Up
           </Link>
         </p>

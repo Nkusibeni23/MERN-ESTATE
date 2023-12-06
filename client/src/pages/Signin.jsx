@@ -94,7 +94,7 @@ export default function Signin() {
         </button>
         <p className="text-center text-sm">
           Already have an account? &nbsp;
-          <Link to="/" className=" text-sm font-medium underline">
+          <Link to="/login" className=" text-sm font-medium underline">
             Login
           </Link>
         </p>
