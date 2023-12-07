@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Header() {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <header className="shadow-md">
       <div className="flex justify-between items-center p-4 max-w-6xl mx-auto">
@@ -46,8 +48,19 @@ export default function Header() {
               About
             </li>
           </Link>
-          <Link to="/signin">
-            <li className="font-medium hover:underline">Sign in</li>
+          <Link to="/profile">
+            {
+              // if user is logged in, show logout button else show login and register buttons
+              currentUser ? (
+                <img
+                  src={currentUser.avatar}
+                  alt="profile"
+                  className=" w-8 h-8 rounded-2xl object-cover"
+                />
+              ) : (
+                <li className="font-medium hover:underline">Sign in</li>
+              )
+            }
           </Link>
         </ul>
       </div>
