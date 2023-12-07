@@ -49,18 +49,17 @@ export default function Header() {
             </li>
           </Link>
           <Link to="/profile">
-            {
-              // if user is logged in, show logout button else show login and register buttons
-              currentUser ? (
+            {currentUser ? (
+              <>
                 <img
                   src={currentUser.avatar}
                   alt="profile"
-                  className=" w-8 h-8 rounded-2xl object-cover"
+                  className="w-8 h-8 rounded-2xl object-cover"
                 />
-              ) : (
-                <li className="font-medium hover:underline">Sign in</li>
-              )
-            }
+              </>
+            ) : (
+              <li className="font-medium hover:underline">Sign in</li>
+            )}
           </Link>
         </ul>
       </div>

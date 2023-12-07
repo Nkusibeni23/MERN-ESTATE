@@ -1,9 +1,62 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useSelector } from "react-redux";
+import { useRef, useState, useEffect } from "react";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { app } from "../firebase";
 
 export default function Profile() {
+  const fileRef = useRef(null);
   const { currentUser } = useSelector((state) => state.user);
+  const [file, setFile] = useState(undefined);
+  const [filePrec, setFilePrec] = useState(0);
+  const [fileUploadError, setFileUploadError] = useState(false);
+  const [formData, setFormData] = useState({});
+  console.log(formData.imageUrl);
+  console.log(filePrec);
+  console.log(fileUploadError);
+
+  // firebase storage
+  // allow read;
+  // allow write: if
+  // request.resource.size < 2 * 1024 * 1024 &&
+  // request.resource.contentType.matches("image/.*")
+
+  useEffect(() => {
+    if (file) {
+      handleFileUpload(file);
+    }
+  }, [file]);
+
+  const handleFileUpload = (file) => {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setFilePrec(Math.round(progress));
+      },
+      (error) => {
+        setFileUploadError(true);
+        console.error("Error", error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setFormData({ ...formData, imageUrl: downloadURL });
+        });
+      }
+    );
+  };
   return (
-    <div className="flex-1 px-4 py-6 mx-2 my-4 overflow-hidden bg-white rounded-lg shadow-xl ">
+    <div className="flex-1 px-4 py-6 mx-2 my-4 overflow-hidden">
       <h1 className="text-3xl font-bold flex justify-center items-start my-6">
         Profile
       </h1>
@@ -12,11 +65,30 @@ export default function Profile() {
         action="/profile/update"
         method="POST"
       >
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+          ref={fileRef}
+          hidden
+          accept="image/*"
+        />
         <img
-          src={currentUser.avatar}
+          src={formData.imageUrl || currentUser.avatar}
+          onClick={() => fileRef.current.click()}
           alt="profile"
           className="object-cover object-center h-32 w-28 rounded-full border-gray-200 cursor-pointer self-center"
         />
+        <p className="flex text-xs items-center justify-center">
+          {fileUploadError ? (
+            <span className="text-red-500">
+              Error Image Upload(Image must be less than 2 mb)
+            </span>
+          ) : filePrec > 0 && filePrec < 100 ? (
+            <span className="text-slate-700">{`Uploading ${filePrec}%`}</span>
+          ) : filePrec === 100 ? (
+            <span className="text-green-500">Image uploaded successfully!</span>
+          ) : null}
+        </p>
         <input
           type="text"
           id="username"
