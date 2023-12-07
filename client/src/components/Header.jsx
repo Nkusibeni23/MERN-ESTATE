@@ -5,27 +5,27 @@ export default function Header() {
     <header className="shadow-md">
       <div className="flex justify-between items-center p-4 max-w-6xl mx-auto">
         <Link to="/">
-          <h1 className="flex font-semibold text-sm sm:text-xl flex-wrap">
+          <h1 className="flex flex-wrap text-base sm:text-sm">
             <span className="text-red-400">Nkusi</span>
             <span className="text-black-600">Estate</span>
           </h1>
         </Link>
-        <form className="border border-gray-300 rounded-full p-1 py-1 flex items-center">
+        <form className=" border border-gray-500 rounded-full p-3 py-2 flex items-center justify-between">
           <input
             type="text"
             name="search"
             id="search"
-            className="bg-transparent outline-none text-sm sm:text-lg w-24 sm:w-64"
-            placeholder="  Search..."
+            className="bg-transparent outline-none text-sm sm:text-lg w-24 sm:w-60 placeholder:text-gray-500"
+            placeholder="Search..."
           />
-          <div className="text-white bg-red-500 rounded-full p-1">
+          <div className="flex text-white bg-red-500 rounded-full p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-6 h-6"
+              className="w-5 h-5"
             >
               <path
                 strokeLinecap="round"
@@ -47,7 +47,7 @@ export default function Header() {
             </li>
           </Link>
           <Link to="/signin">
-            <li className=" hover:underline font-medium">Sign in</li>
+            <li className="font-medium hover:underline">Sign in</li>
           </Link>
         </ul>
       </div>

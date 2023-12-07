@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 export default function Signin() {
   const [formData, setFormData] = useState({});
@@ -79,6 +80,7 @@ export default function Signin() {
         >
           {loading ? "Loading..." : "LOGIN"}
         </button>
+        <OAuth />
         <p className="text-center">
           Dont have an account? &nbsp;
           <Link to="/signin" className="font-semibold text-sm underline">
