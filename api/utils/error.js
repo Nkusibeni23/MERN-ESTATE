@@ -3,3 +3,5 @@ const errorHandler = (status, message) => {
   error.status = status;
   return error;
 };
+
+export { errorHandler };

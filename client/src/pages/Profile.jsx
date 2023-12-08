@@ -8,17 +8,27 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+} from "../redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 export default function Profile() {
   const fileRef = useRef(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, isLoading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [filePrec, setFilePrec] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
-  console.log(formData.imageUrl);
-  console.log(filePrec);
-  console.log(fileUploadError);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const dispatch = useDispatch();
+
+  // console.log(formData);
+
+  // console.log(filePrec);
+  // console.log(fileUploadError);
 
   // firebase storage
   // allow read;
@@ -50,11 +60,37 @@ export default function Profile() {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          setFormData({ ...formData, imageUrl: downloadURL });
+          setFormData({ ...formData, avatar: downloadURL });
         });
       }
     );
   };
+
+  function handleChange(e) {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  }
+  async function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+    }
+  }
   return (
     <div className="flex-1 px-4 py-6 mx-2 my-4 overflow-hidden">
       <h1 className="text-3xl font-bold flex justify-center items-start my-6">
@@ -62,8 +98,7 @@ export default function Profile() {
       </h1>
       <form
         className="flex flex-col gap-y-4 w-full max-w-md mx-auto"
-        action="/profile/update"
-        method="POST"
+        onSubmit={handleSubmit}
       >
         <input
           type="file"
@@ -73,10 +108,10 @@ export default function Profile() {
           accept="image/*"
         />
         <img
-          src={formData.imageUrl || currentUser.avatar}
+          src={formData.avatar || currentUser.avatar}
           onClick={() => fileRef.current.click()}
           alt="profile"
-          className="object-cover object-center h-32 w-28 rounded-full border-gray-200 cursor-pointer self-center"
+          className="object-cover object-center h-32 w-32 rounded-full border-gray-200 cursor-pointer self-center"
         />
         <p className="flex text-xs items-center justify-center">
           {fileUploadError ? (
@@ -92,29 +127,32 @@ export default function Profile() {
         <input
           type="text"
           id="username"
+          defaultValue={currentUser.username}
           placeholder="Your Username...."
+          onChange={handleChange}
           className="outline-none border-2 border-gray-200 rounded-lg py-2 px-2"
         />
         <input
           type="text"
           id="email"
-          placeholder="Your Email 
-        "
+          defaultValue={currentUser.email}
+          placeholder="Your Email"
+          onChange={handleChange}
           className="outline-none border-2 border-gray-200 rounded-lg py-2 px-2"
         />
         <input
-          type="text"
+          type="password"
           id="password"
-          placeholder="Your Password
-        "
+          placeholder="**********"
+          onChange={handleChange}
           className="outline-none border-2 border-gray-200 rounded-lg py-2 px-2"
         />
         <button
-          type="submit"
           className="w-full bg-gray-800 rounded-lg px-8 py-2 text-white text-md uppercase font-semibold tracking-wide
         transition ease-in duration-200 text-transform cursor-pointer"
+          disabled={isLoading}
         >
-          Save Changes
+          {isLoading ? "loading...." : "Save Changes"}
         </button>
         <div className="flex justify-between">
           <span className="align-middle cursor-pointer text-red-500 select-none relative whitespace-no-wrap text-sm leading-5">
@@ -137,6 +175,14 @@ export default function Profile() {
             </svg>
             Sign Out
           </span>
+        </div>
+        <div className="flex justify-center items-center">
+          <p className="text-xs text-red-600 font-medium">
+            {error ? error : ""}
+          </p>
+          <p className="text-xs text-green-700 font-medium">
+            {updateSuccess ? "User is updated successfully!" : ""}
+          </p>
         </div>
       </form>
     </div>
