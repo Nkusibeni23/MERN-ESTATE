@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useSelector } from "react-redux";
 import { useRef, useState, useEffect } from "react";
@@ -15,6 +16,7 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  signOutUserStart,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -110,6 +112,21 @@ export default function Profile() {
       dispatch(deleteUserFailure(error.message));
     }
   }
+  const handlesignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch("/api/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess());
+    } catch (error) {
+      dispatch(deleteUserFailure(data.message));
+      console.log(error);
+    }
+  };
   return (
     <div className="flex-1 px-4 py-6 mx-2 my-4 overflow-hidden">
       <h1 className="text-3xl font-bold flex justify-center items-start my-6">
@@ -180,7 +197,10 @@ export default function Profile() {
           >
             Delete Account
           </span>
-          <span className="align-middle cursor-pointer text-red-500 select-none relative whitespace-no-wrap text-sm leading-5 flex items-center gap-1">
+          <span
+            onClick={handlesignOut}
+            className="align-middle cursor-pointer text-red-500 select-none relative whitespace-no-wrap text-sm leading-5 flex items-center gap-1"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
