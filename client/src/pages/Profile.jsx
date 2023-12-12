@@ -19,6 +19,7 @@ import {
   signOutUserStart,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -190,6 +191,14 @@ export default function Profile() {
         >
           {isLoading ? "loading...." : "Save Changes"}
         </button>
+        <Link to={"/create-listing"}>
+          <button
+            className=" w-full rounded-lg uppercase bg-blue-600 hover:bg-blue-800 transition-all hover:duration-200 text-white font-bold py-2 px
+          4 outline-none focus:shadow-outline"
+          >
+            Create Listing
+          </button>
+        </Link>
         <div className="flex justify-between">
           <span
             onClick={handleDeleteUser}

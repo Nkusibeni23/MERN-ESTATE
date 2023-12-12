@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Header from "./components/Header";
 import Login from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
+import CreateListing from "./pages/CreateListing";
 export default function App() {
   return (
     <Router>
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/Index" element={<Index />} />
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/create-listing" element={<CreateListing />} />
         </Route>
       </Routes>
     </Router>
