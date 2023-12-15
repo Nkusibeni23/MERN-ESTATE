@@ -22,7 +22,7 @@ export default function CreateListing() {
     bedrooms: 1,
     bathrooms: 1,
     regularPrice: "",
-    discountedPrice: "0",
+    discountedPrice: "",
     offer: false,
     parking: false,
     furnished: false,
@@ -195,8 +195,8 @@ export default function CreateListing() {
             id="description"
             name="description"
             rows={3}
-            className="mt-1 block w-full py-2 px-3 text-base border border-gray-300 rounded-
-          md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-50
+            className="mt-1 block  w-full rounded-md py-2 px-3 text-base border border-gray-300 rounded-
+          md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
           0 sm:text-base"
             required
             placeholder="Description..."

@@ -8,7 +8,7 @@ export default function Header() {
       <div className="flex justify-between items-center p-4 max-w-6xl mx-auto">
         <Link to="/">
           <h1 className="flex flex-wrap text-base sm:text-sm">
-            <span className="text-red-400">Nkusi</span>
+            <span className="text-indigo-400">Nkusi</span>
             <span className="text-black-600">Estate</span>
           </h1>
         </Link>
@@ -20,7 +20,7 @@ export default function Header() {
             className="bg-transparent outline-none text-sm sm:text-lg w-24 sm:w-60 placeholder:text-gray-500"
             placeholder="Search..."
           />
-          <div className="flex text-white bg-red-500 rounded-full p-2">
+          <div className="flex text-white bg-indigo-600 rounded-full p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
