@@ -29,6 +29,8 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [showListingError, setShowListingError] = useState(false);
+  const [userListings, setUserListings] = useState([]);
   const dispatch = useDispatch();
 
   // console.log(formData);
@@ -126,6 +128,20 @@ export default function Profile() {
     } catch (error) {
       dispatch(deleteUserFailure(data.message));
       console.log(error);
+    }
+  };
+  const handleShowListings = async () => {
+    try {
+      setShowListingError(false);
+      const res = await fetch(`api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        setShowListingError(true);
+        return;
+      }
+      setUserListings(data);
+    } catch (error) {
+      setShowListingError(true);
     }
   };
   return (
@@ -234,6 +250,86 @@ export default function Profile() {
           <p className="text-xs text-green-700 font-medium">
             {updateSuccess ? "User is updated successfully!" : ""}
           </p>
+        </div>
+
+        <div className="flex items-center justify-center">
+          <button
+            onClick={handleShowListings}
+            className="font-semibold text-base text-indigo-600 flex items-center justify-center gap-2"
+          >
+            Show Listings
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-5 h-5"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+          <p className=" text-red-600 mt-2 font-medium text-sm">
+            {showListingError ? "Error showing listings" : ""}
+          </p>
+        </div>
+        <h1 className=" text-center font-bold text-xl uppercase underline">
+          Your Listings
+        </h1>
+        <div className="">
+          {userListings &&
+            userListings.length > 0 &&
+            userListings.map((listing) => (
+              <>
+                <div
+                  key={listing._id}
+                  className="border rounded-lg p-3 flex justify-between items-center gap-4"
+                >
+                  <Link to={`/listing/${listing._id}`}>
+                    <img
+                      src={listing.imageUrls[0]}
+                      alt="listing cover"
+                      className="w-24 h-24 rounded-lg object-cover"
+                    />
+                  </Link>
+                  <Link
+                    className="flex-1 text-slate-700 font-semibold text-sm  hover:underline transition-all duration-300 truncate"
+                    to={`/listing/${listing._id}`}
+                  >
+                    <span>{listing.name}</span>
+                  </Link>
+                  <div className="flex gap-2 items-center justify-center">
+                    <button className="text-red-500 hover:text-red-600">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    <button className="text-indigo-500 hover:text-indigo-600">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-4 h-4"
+                      >
+                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                        <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </>
+            ))}
         </div>
       </form>
     </div>
