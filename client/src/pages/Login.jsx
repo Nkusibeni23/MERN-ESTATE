@@ -57,8 +57,8 @@ export default function Signin() {
           <input
             type="email"
             id="email"
-            placeholder=" johndoe@gmail.com"
-            className="border border-gray-300 rounded-md p-1 outline-none"
+            placeholder="johndoe@gmail.com"
+            className="border border-gray-300 rounded-md p-1 outline-none focus:ring-1 focus:ring-indigo-400 placeholder:px-1"
             onChange={handleChange}
             required
           />
@@ -68,8 +68,8 @@ export default function Signin() {
           <input
             type="password"
             id="password"
-            placeholder=" ********"
-            className="border border-gray-300 rounded-md p-1 outline-none"
+            placeholder="********"
+            className="border border-gray-300 rounded-md p-1 outline-none focus:ring-1 focus:ring-indigo-400 placeholder:px-1"
             onChange={handleChange}
             required
           />
@@ -83,11 +83,11 @@ export default function Signin() {
         <OAuth />
         <p className="text-center">
           Dont have an account? &nbsp;
-          <Link to="/signin" className="font-semibold text-sm underline">
-            Sign Up
+          <Link to="/signin" className="font-bold text-sm underline">
+            Sign In
           </Link>
         </p>
-        <p className="text-center mb-1">
+        <p className="text-center mb-2">
           <Link
             to="/forgot-password"
             className="font-semibold text-sm underline"

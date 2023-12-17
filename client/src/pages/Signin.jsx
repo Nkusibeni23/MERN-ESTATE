@@ -42,7 +42,7 @@ export default function Signin() {
   return (
     <div>
       <div className="flex items-center justify-center">
-        <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
+        <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
       </div>
       <form
         className="
@@ -62,8 +62,8 @@ export default function Signin() {
           <input
             type="text"
             id="username"
-            placeholder=" Username..."
-            className="border border-gray-300 rounded-md p-1 outline-none"
+            placeholder="username...."
+            className="border border-gray-300 rounded-md p-1 outline-none focus:ring-1 focus:ring-indigo-400 placeholder:px-1"
             onChange={handleChange}
             required
           />
@@ -73,8 +73,8 @@ export default function Signin() {
           <input
             type="email"
             id="email"
-            placeholder=" johndoe@gmail.com"
-            className="border border-gray-300 rounded-md p-1 outline-none"
+            placeholder="johndoe@gmail.com"
+            className="border border-gray-300 rounded-md p-1 outline-none focus:ring-1 focus:ring-indigo-400 placeholder:px-1"
             onChange={handleChange}
             required
           />
@@ -84,8 +84,8 @@ export default function Signin() {
           <input
             type="password"
             id="password"
-            placeholder=" ********"
-            className="border border-gray-300 rounded-md p-1 outline-none"
+            placeholder="*********"
+            className="border border-gray-300 rounded-md p-1 outline-none focus:ring-1 focus:ring-indigo-400 placeholder:px-1"
             onChange={handleChange}
             required
           />
@@ -94,12 +94,12 @@ export default function Signin() {
           disabled={loading}
           className="bg-black text-white rounded-lg p-2 mt-3 font-semibold hover:bg-gray-700"
         >
-          {loading ? "Loading..." : "Sign Up"}
+          {loading ? "Loading..." : "SIGN IN"}
         </button>
         <OAuth />
         <p className="text-center text-sm">
           Already have an account? &nbsp;
-          <Link to="/login" className=" text-sm font-medium underline">
+          <Link to="/login" className="text-sm font-bold underline">
             Login
           </Link>
         </p>

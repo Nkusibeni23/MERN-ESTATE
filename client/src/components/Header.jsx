@@ -7,12 +7,12 @@ export default function Header() {
     <header className="shadow-md">
       <div className="flex justify-between items-center p-4 max-w-6xl mx-auto">
         <Link to="/">
-          <h1 className="flex flex-wrap text-base sm:text-sm">
-            <span className="text-indigo-400">Nkusi</span>
-            <span className="text-black-600">Estate</span>
+          <h1 className="flex flex-wrap">
+            <span className="text-indigo-500 font-semibold">Nkusi</span>
+            <span className="text-black-600 font-medium">Estate</span>
           </h1>
         </Link>
-        <form className=" border border-gray-500 rounded-full p-3 py-2 flex items-center justify-between">
+        <form className=" border border-gray-500 rounded-full p-3 py-2 flex items-center justify-between cursor-pointer">
           <input
             type="text"
             name="search"
@@ -48,7 +48,7 @@ export default function Header() {
               About
             </li>
           </Link>
-          <Link to="/profile">
+          <Link to="/profile" className="font-medium hover:underline">
             {currentUser ? (
               <>
                 <img
@@ -58,7 +58,7 @@ export default function Header() {
                 />
               </>
             ) : (
-              <li className="font-medium hover:underline">Sign in</li>
+              <li>Sign in</li>
             )}
           </Link>
         </ul>
