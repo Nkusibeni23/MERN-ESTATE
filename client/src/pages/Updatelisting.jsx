@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getDownloadURL,
   getStorage,
@@ -7,11 +7,12 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function CreateListing() {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const params = useParams();
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
@@ -31,7 +32,26 @@ export default function CreateListing() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  console.log(formData);
+
+  useEffect(() => {
+    const fetchListing = async () => {
+      const listingId = params.listingId;
+      const res = await fetch(`/api/listing/get/${listingId}`);
+      if (!res.ok) {
+        console.error(`Request failed with status ${res.status}`);
+        return;
+      }
+      const data = await res.json();
+
+      if (data.success === false) {
+        console.log(data.message);
+        return;
+      }
+      setFormData(data);
+    };
+    fetchListing();
+  }, []);
+
   const handleUpload = () => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 10) {
       setUploading(true);
@@ -137,7 +157,7 @@ export default function CreateListing() {
         return setError("Discount price must be lower than Regular price");
       setLoading(true);
       setError(false);
-      const res = await fetch("/api/listing/create", {
+      const res = await fetch(`/api/listing/update/${params.listingId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -162,8 +182,8 @@ export default function CreateListing() {
 
   return (
     <main className="p-3 max-w-4xl mx-auto">
-      <h1 className="text-2xl text-center font-bold mt-8 my-7">
-        Create Listing
+      <h1 className="text-xl text-center font-bold mt-8 my-7 uppercase">
+        Update a Listing
       </h1>
 
       <form className="flex flex-col md:flex-row" onSubmit={handleSubmit}>
@@ -425,7 +445,7 @@ export default function CreateListing() {
             disabled={loading || uploading}
             className="mt-4 py-3 font-bold tracking-wide text-black uppercase border-2 border-black shadow-sm hover:bg-black hover:text-white focus:outline-none focus:shadow-transparent cursor-pointer rounded-lg transition-all duration-200"
           >
-            {loading ? "Creating..." : "Create Listing"}
+            {loading ? "Update..." : "Update Listing"}
           </button>
           {error && (
             <p className="mt-2 text-xs italic text-red-700 font-medium">
