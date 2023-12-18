@@ -22,7 +22,7 @@ export default function CreateListing() {
     bedrooms: 1,
     bathrooms: 1,
     regularPrice: "",
-    discountedPrice: "",
+    discountedPrice: "0",
     offer: false,
     parking: false,
     furnished: false,
@@ -328,7 +328,6 @@ export default function CreateListing() {
                 <input
                   type="number"
                   id="discountedPrice"
-                  required
                   className="p-2 border border-gray-300 rounded-lg w-28 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:
                    text-sm"
                   placeholder="Discounted Price ($/month)"
