@@ -30,7 +30,7 @@ export default function Listing() {
           setLoading(false);
           return;
         }
-        console.log(data);
+        // console.log(data);
         setListings(data);
         setLoading(false);
         setError(false);
