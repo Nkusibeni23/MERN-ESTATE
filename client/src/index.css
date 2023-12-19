@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom styles for Swiper navigation */
+.swiper-button-prev,
+.swiper-button-next {
+  background-color: transparent; /* Change this to the color you want */
+  color: #fff; /* Text color */
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: transparent; /* Change this to the hover color you want */
+}
+
+/* Optionally, you can customize the size and other styles */
+.swiper-button-prev {
+  left: 10px;
+}
+
+.swiper-button-next {
+  right: 10px;
+}

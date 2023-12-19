@@ -39,7 +39,7 @@ export default function Listing() {
     fetchListing();
   }, [params.listingId]);
 
-  const totalDiscounted = +listings.regularPrice - +listings.discountedPrice;
+  //   const totalDiscounted = +listings.regularPrice - +listings.discountedPrice;
 
   return (
     <main>
@@ -97,22 +97,41 @@ export default function Listing() {
           </div>
           <div className="flex flex-col flex-wrap max-w-4xl mx-auto p-3 my-2 gap-4">
             <p className="text-xl font-medium">
-              {listings.offer === "true" ? (
+              {listings.type === "rent" && listings.discountedPrice > 0 ? (
                 <div className="flex items-center gap-2">
-                  <p className="text-2xl font-semibold"> {listings.name} -</p>
-                  <p className=" line-through text-slate-600">
-                    $ {listings.regularPrice.toLocaleString("en-US")}
+                  <p className="text-2xl font-semibold">{listings.name} -</p>
+                  <p className="line-through text-slate-600">
+                    ${listings.regularPrice.toLocaleString("en-US")}
                   </p>
                   <p className="text-black font-bold">
-                    ${totalDiscounted.toLocaleString("en-US")}
+                    $
+                    {(
+                      +listings.regularPrice - +listings.discountedPrice
+                    ).toLocaleString("en-US")}
                   </p>
+                  <span>/month</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <p className="text-2xl font-semibold"> {listings.name} -</p>{" "}
-                  <span className="font-bold text-black">
-                    $ {listings.regularPrice.toLocaleString("en-US")}
-                  </span>
+                  <p className="text-2xl font-semibold">{listings.name} -</p>
+                  {listings.discountedPrice > 0 ? (
+                    <>
+                      <p className="line-through text-slate-600">
+                        ${listings.regularPrice.toLocaleString("en-US")}
+                      </p>
+                      <p className="text-black font-bold">
+                        $
+                        {(
+                          +listings.regularPrice - +listings.discountedPrice
+                        ).toLocaleString("en-US")}
+                      </p>
+                    </>
+                  ) : (
+                    <span className="font-bold text-black">
+                      ${listings.regularPrice.toLocaleString("en-US")}
+                    </span>
+                  )}
+                  {listings.type === "rent" && <p>/ month</p>}
                 </div>
               )}
             </p>
@@ -133,14 +152,9 @@ export default function Listing() {
               {listings.address}
             </p>
             <div className="flex gap-4 items-center text-center">
-              <p className="bg-indigo-700 w-full max-w-[200px] text-white rounded-md font-medium p-1">
+              <p className=" bg-indigo-700 w-full max-w-[200px] text-white rounded-md font-medium p-1">
                 {listings.type === "rent" ? "For Rent" : "For Sale"}
               </p>
-              {listings.offer && (
-                <p className="bg-orange-600 w-full max-w-[200px] text-white rounded-md font-medium p-1">
-                  ${listings.regularPrice - listings.discountedPrice}
-                </p>
-              )}
             </div>
             <p className=" text-slate-700">
               <span className="font-bold text-black text-lg">
