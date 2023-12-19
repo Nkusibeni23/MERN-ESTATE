@@ -15,8 +15,9 @@ export default function Search() {
   });
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
+  const [showMore, setShowMore] = useState(false);
 
-  console.log(listings);
+  //   console.log(listings);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -50,9 +51,15 @@ export default function Search() {
 
     const fetchListings = async () => {
       setLoading(true);
+      setShowMore(false);
       const searchQuery = urlParams.toString();
       const res = await fetch(`/api/listing/get?${searchQuery}`);
       const data = await res.json();
+      if (data.length > 8) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
+      }
       setListings(data);
       setLoading(false);
     };
@@ -106,6 +113,20 @@ export default function Search() {
 
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
+  };
+
+  const onShowMoreClick = async () => {
+    const numberOfListings = listings.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/listing/get?${searchQuery}`);
+    const data = await res.json();
+    if (data.length < 9) {
+      setShowMore(false);
+    }
+    setListings([...listings, ...data]);
   };
 
   return (
@@ -211,7 +232,7 @@ export default function Search() {
         </form>
       </div>
       <div className="flex-1">
-        <h1 className="text-xl font-semibold border-b p-3 text-slate-500 mt-5">
+        <h1 className="text-xl font-semibold border-b p-3 text-indigo-500 mt-5">
           Listings Results:
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
@@ -231,6 +252,14 @@ export default function Search() {
               <ListingItems key={listing._id} listing={listing} />
             ))}
         </div>
+        {showMore && (
+          <button
+            onClick={onShowMoreClick}
+            className=" flex text-indigo-600 hover:underline transition-all duration-200 p-7 font-semibold text-sm"
+          >
+            Show more
+          </button>
+        )}
       </div>
     </div>
   );

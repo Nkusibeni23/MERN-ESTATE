@@ -17,14 +17,14 @@ export default function ListingItems({ listing }) {
         </div>
 
         <div className="p-3 flex flex-col gap-2 w-full">
-          <p className="text-lg font-semibold text-slate-700 truncate">
+          <p className="text-lg font-semibold text-slate-700 line-clamp-1">
             {listing.name}
           </p>
           <div className="flex items-center gap-2">
             <MdLocationOn className="h-4 w-4 text-slate-500" />
             <p className=" text-sm text-gray-500 w-full">{listing.address}</p>
           </div>
-          <p className="text-sm text-gray-500 line-clamp-3">
+          <p className="text-sm text-gray-500 line-clamp-4">
             {listing.description}
           </p>
           <p className=" font-semibold text-slate-600 mt-2">
