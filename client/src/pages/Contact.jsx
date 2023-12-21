@@ -36,12 +36,12 @@ export default function Contact({ listings }) {
             id="message"
             cols="30"
             rows="2"
-            required
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Enter your message here..."
             className="w-full py-2 px-3 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
             0 sm:text-base"
+            required
           ></textarea>
           <Link
             to={`mailto:${landLord.email}?subject=Regarding ${listings.name}&body=${message}`}

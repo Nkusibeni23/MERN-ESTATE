@@ -56,7 +56,7 @@ export default function Home() {
         <h1 className=" text-slate-700 font-bold text-4xl lg:text-6xl">
           Find your next <span className=" text-slate-400">Perfect</span>
           <br />
-          place with ease
+          Place with ease
         </h1>
         <div className=" text-gray-400 text-sm sm:text-base">
           Nkusi Estate is the best place to find your next perfect place to live
