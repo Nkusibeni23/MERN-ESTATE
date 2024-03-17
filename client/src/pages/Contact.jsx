@@ -10,7 +10,7 @@ export default function Contact({ listings }) {
     const fetchLandlord = async () => {
       try {
         const res = await fetch(`/api/user/${listings.userRef}`);
-        console.log(res); // Log the response to the console
+        console.log(res);
         const data = await res.json();
         setLandLord(data);
       } catch (error) {
